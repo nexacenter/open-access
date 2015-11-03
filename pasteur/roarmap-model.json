@@ -1,0 +1,104 @@
+[
+    {
+        "Prefixes noted just for my convinience": [
+            {
+                "@prefix rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns# ."
+            },
+            {
+                "@prefix rdfs": "http://www.w3.org/2000/01/rdf-schema# ."
+            },
+            {
+                "@prefix owl": "http://www.w3.org/2002/07/owl# ."
+            },
+            {
+                "@prefix dc": "http://purl.org/dc/elements/1.1/ ."
+            },
+            {
+                "@prefix foaf": "http://xmlns.com/foaf/0.1/ ."
+            },
+            {
+                "@prefix dbpprop": "http://dbpedia.org/property/ ."
+            }
+        ],
+        "Triples to be statically added": [
+            {
+                "triple1": "http://roarmap.nexacenter.org/id/property/eprintIdentifier http://www.w3.org/2000/01/rdf-schema#subPropertyOf http://purl.org/dc/terms/identifier ."
+            },
+            {
+                "triple2": "http://roarmap.nexacenter.org/id/property/policyComment http://www.w3.org/2000/01/rdf-schema#subPropertyOf http://www.w3.org/2000/01/rdf-schema#comment ."
+            }
+        ]
+    },
+    {
+        "propertiesToMap": [
+            {
+                "waive_open_access": "http://roarmap.nexacenter.org/id/property/waiveOpenAccess",
+                "policy_colour": "http://roarmap.nexacenter.org/id/property/policyColour",
+                "eprintid": "http://roarmap.nexacenter.org/id/property/eprintIdentifier",
+                "open_access_waivable": "http://roarmap.nexacenter.org/id/property/openAccessWaivable",
+                "added_by": "http://purl.org/dc/terms/creator",
+                "_comment to added by": "Da riferirsi alle triple che descrivono l'entita o simili",
+                "iliege_hefce_model": "http://roarmap.nexacenter.org/id/property/isLiegeHefceModel",
+                "policy_comments": "http://roarmap.nexacenter.org/id/property/policyComment",
+                "research_process_comments": "http://roarmap.nexacenter.org/id/property/researchProcessComment",
+                "country_inclusive": [
+                    {
+                        "_comment": "TODO: to be sure, check that there are exactly four items in brackets. Map with GeoNames?",
+                        "value0": "notSet",
+                        "value1": "http://roarmap.nexacenter.org/id/property/unGeoschemeContinentalSupranationalRegion",
+                        "value2": "http://roarmap.nexacenter.org/id/property/unGeoschemeSubContinentalSupranationalRegion",
+                        "value3": "http://roarmap.nexacenter.org/id/property/unGeoschemeGeopoliticalEntity"
+                    }
+                ],
+                "embargo_hum_soc": "http://roarmap.nexacenter.org/id/property/embargoHumSoc",
+                "embargo_sci_tech_med": "http://roarmap.nexacenter.org/id/property/embargoSciTechMed",
+                "source_of_policy": "http://roarmap.nexacenter.org/id/property/sourceOfPolicy",
+                "apc_funding": "http://roarmap.nexacenter.org/id/property/apcFunding",
+                "apc_fun_url": "http://roarmap.nexacenter.org/id/property/apcFunUrl",
+                "policymaker_name": "http://www.w3.org/2000/01/rdf-schema#label",
+                "_comment policy_maker_name": "//TODO: this is a property of the policy maker entity to be created",
+                "repository_url": "http://roarmap.nexacenter.org/id/property/repositoryUrl",
+                "datestamp": "http://roarmap.nexacenter.org/id/property/datestamp",
+                "uri": "notSet",
+                "_comment uri": "//NOTE: this is the subject of all thetriples and/or it may be //extracted from here",
+                "mandate_content_types": [
+                    {
+                        "_comment": "//NOTE: may have multiple values each being",
+                        "content_type": "http://roarmap.nexacenter.org/id/property/mandateContentType"
+                    }
+                ],
+                "policymaker_url": "http://xmlns.com/foaf/0.1/homepage",
+                "_comment policymaker_url": "//TODO: this is a property of the policy maker",
+                "journal_article_version": "http://roarmap.nexacenter.org/id/property/journalArticleVersion",
+                "type": "notSet",
+                "title": "http://purl.org/dc/elements/1.1/title",
+                "maximal_embargo_waivable": "http://roarmap.nexacenter.org/id/property/maximalEmbargoWaivable",
+                "userid": "notSet",
+                "deposit_of_item": "http://roarmap.nexacenter.org/id/property/depositOfItem",
+                "rev_number": "notSet",
+                "dir": "notSet",
+                "policymaker_type": "http://roarmap.nexacenter.org/id/property/policymakerType",
+                "_comment policymaker_type": "//TODO: this is a property of the policy maker",
+                "can_deposit_be_waived": "http://roarmap.nexacenter.org/id/property/canDepositBeWaived",
+                "date_made_open": "http://roarmap.nexacenter.org/id/property/dateToBeMadeOpen",
+                "lastmod": "notSet",
+                "rights_holding": "http://roarmap.nexacenter.org/id/property/rightsHolding",
+                "open_licensing_conditions": "http://roarmap.nexacenter.org/id/property/openLicensingConditions",
+                "gold_oa_options": "http://roarmap.nexacenter.org/id/property/goldOAOptions",
+                "rights_retention_waivable": "http://roarmap.nexacenter.org/id/property/rightsRetentionWaivable",
+                "metadata_visibility": "notSet",
+                "country": "notSet",
+                "eprint_status": "notSet",
+                "policy_url": "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
+                "status_changed": "notSet",
+                "policy_adoption": "http://roarmap.nexacenter.org/id/property/policyAdoptionDate",
+                "policy_effecive": "http://roarmap.nexacenter.org/id/property/policyEffeciveDate",
+                "last_revision": "http://roarmap.nexacenter.org/id/property/policyLastRevisionDate",
+                "making_deposit_open": "http://roarmap.nexacenter.org/id/property/makingDepositOpen",
+                "date_of_deposit": "http://roarmap.nexacenter.org/id/property/dateOfDeposit",
+                "locus_of_deposit": "http://roarmap.nexacenter.org/id/property/locusOfDeposit",
+                "documents": "notSet"
+            }
+        ]
+    }
+]   
