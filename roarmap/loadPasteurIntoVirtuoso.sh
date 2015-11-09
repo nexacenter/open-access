@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# obviously: XXX
 function check {
     if [ "$size" == "334" ]
     then
