@@ -3,7 +3,8 @@
 
 "use strict";
 
-var fs = require("fs"),
+var fast_csv = require("fast-csv"),
+    fs = require("fs"),
     http = require("http"),
     kvHostName = 'roarmap.eprints.org',
     kvIndexFile = "index.html",
@@ -22,7 +23,8 @@ var fs = require("fs"),
         "mandate_content_types": true,
         "maximal_embargo_waivable": true,
         "open_licensing_conditions": true
-    };
+    },
+    kvRulesPath = "roarmap-rules.csv";
 
 function simplify(record) {
     var newRecord = {};
@@ -38,7 +40,6 @@ function asList(record) {
     var newRecord = [];
     Object.keys(record).forEach(function (key) {
         var value = record[key];
-        console.log(key, value, typeof value);
         if (value instanceof Array) {
             for (var i = 0; i < value.length; ++i) {
                 newRecord.push([key, value[i]]);
@@ -88,38 +89,77 @@ function callEprints(path, callback) {
     request.end();
 }
 
-http.createServer(function (request, response) {
-
-    if (request.url === "/") {
-        var stream = fs.createReadStream(kvIndexFile);
-        stream.on("error", function (error) {
-            console.log("stream error:", error);
-            response.end();
+function loadRules(callback) {
+    var rules = [];
+    fast_csv
+        .fromPath(kvRulesPath)
+        .on("data", function (fields) {
+            rules.push(fields);
+        })
+        .on("end", function () {
+            callback(rules);
         });
-        stream.pipe(response);
-        return;
-    }
+}
 
-    if (request.url.match(/^\/id\/eprint\/[0-9]+/)) {
-        callEprints(request.url, function (error, record) {
-            if (error) {
-                console.log("callEprints error:", error);
-                response.writeHead(500);
-                response.end("Internal Server Error\n");
-                return;
-            }
-            record = asList(simplify(record));
-            response.writeHead(200, {
-                "Content-Type": "application/json"
+function applyRules(rules, record) { // Yes, this is O(N^2)
+    var newRecord = [];
+    for (var i = 1; i < rules.length; ++i) {
+        var policy_id = rules[i][0],
+            roarmap_field = rules[i][1],
+            if_field_equals = rules[i][2],
+            then = rules[i][3],
+            human_rationale = rules[i][4];
+        for (var j = 0; policy_id && j < record.length; ++j) {
+            if (record[j][0] === roarmap_field &&
+                record[j][1] === if_field_equals) {
+                    newRecord.push([
+                        policy_id,
+                        roarmap_field,
+                        if_field_equals,
+                        then,
+                        human_rationale
+                    ]);
+                    // Note: no break since wore than one rule may apply
+                }
+        }
+    }
+    return newRecord;
+}
+
+loadRules(function (rules) {
+    http.createServer(function (request, response) {
+
+        if (request.url === "/") {
+            var stream = fs.createReadStream(kvIndexFile);
+            stream.on("error", function (error) {
+                console.log("stream error:", error);
+                response.end();
             });
-            response.end(JSON.stringify(record, undefined, 4));
-        });
-        return;
-    }
+            stream.pipe(response);
+            return;
+        }
 
-    response.writeHead(404);
-    response.end("Not Found\n");
+        if (request.url.match(/^\/id\/eprint\/[0-9]+/)) {
+            callEprints(request.url, function (error, record) {
+                if (error) {
+                    console.log("callEprints error:", error);
+                    response.writeHead(500);
+                    response.end("Internal Server Error\n");
+                    return;
+                }
+                record = applyRules(rules, asList(simplify(record)));
+                response.writeHead(200, {
+                    "Content-Type": "application/json"
+                });
+                response.end(JSON.stringify(record, undefined, 4));
+            });
+            return;
+        }
 
-}).listen(kvPort, function () {
-    console.log("server listening on port", kvPort);
+        response.writeHead(404);
+        response.end("Not Found\n");
+
+    }).listen(kvPort, function () {
+        console.log("server listening on port", kvPort);
+    });
 });
