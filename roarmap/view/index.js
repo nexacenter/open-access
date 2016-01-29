@@ -119,7 +119,7 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
                         then,
                         human_rationale
                     ]);
-                    // Note: no break since wore than one rule may apply
+                    // Note: no break since more than one rule may apply
                 }
         }
     }
@@ -151,7 +151,7 @@ loadRules(function (rules) {
                 response.writeHead(200, {
                     "Content-Type": "application/json"
                 });
-                response.end(JSON.stringify(record, undefined, 4));
+                response.end(JSON.stringify(record));
             });
             return;
         }
