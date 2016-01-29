@@ -1,47 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Frontend to roarmap.eprints.org</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    </head>
-    <body>
-        <form>
-            Institution ID:
-            <input type="text" id="institution-id" pattern="^[0-9]+$">
-            <a href="#" id="submit">Submit</a>
-        </form>
-        <div id="result"></div>
-        <script>
-jQuery("load", function () {
-    jQuery("#submit").click(function () {
-        var value = jQuery("#institution-id").val();
-        if (value.match(/^[0-9]+$/)) {
-            jQuery.get({
-                url: "/id/eprint/" + value,
-                success: function (result) {
-                    // XXX all of this is very naive
-                    var html = "<table>";
-                    for (var i = 0; i < result.length; ++i) {
-                        html += "<tr><td>";
-                        html += result[i][0];
-                        html += "</td><td>";
-                        html += result[i][1];
-                        html += "</td><td>";
-                        html += result[i][2];
-                        html += "</td><td>";
-                        html += result[i][3];
-                        html += "</td><td>";
-                        html += result[i][4];
-                        html += "</td></tr>";
-                    }
-                    html += "</table>";
-                    jQuery("#result").html(html);
-                }
-            });
-        }
-    });
-});
-        </script>
-    </body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Frontend to roarmap.eprints.org</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="/app.js"></script>
+  </head>
+  <body>
+    <form>
+      Institution ID:
+      <input type="text" id="institution-id" pattern="^[0-9]+$">
+      <a href="#" id="submit">Submit</a>
+    </form>
+    <div id="result"></div>
+  </body>
 </html>

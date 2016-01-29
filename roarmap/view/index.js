@@ -7,7 +7,6 @@ var fast_csv = require("fast-csv"),
     fs = require("fs"),
     http = require("http"),
     kvHostName = 'roarmap.eprints.org',
-    kvIndexFile = "index.html",
     kvPort = 8080,
     kvRetainFields = {
         "can_deposit_be_waived": true,
@@ -129,16 +128,6 @@ function applyRules(rules, record) { // Yes, this is O(N^2)
 loadRules(function (rules) {
     http.createServer(function (request, response) {
 
-        if (request.url === "/") {
-            var stream = fs.createReadStream(kvIndexFile);
-            stream.on("error", function (error) {
-                console.log("stream error:", error);
-                response.end();
-            });
-            stream.pipe(response);
-            return;
-        }
-
         if (request.url.match(/^\/id\/eprint\/[0-9]+/)) {
             callEprints(request.url, function (error, record) {
                 if (error) {
@@ -156,8 +145,24 @@ loadRules(function (rules) {
             return;
         }
 
-        response.writeHead(404);
-        response.end("Not Found\n");
+        var realpath;
+        if (request.url === "/" || request.url === "/index.html") {
+            realpath = "index.html";
+        } else if (request.url === "/app.js") {
+            realpath = "app.js";
+        }
+
+        if (realpath) {
+            var stream = fs.createReadStream(realpath);
+            stream.on("error", function (error) {
+                console.log("stream error:", error);
+                response.end();
+            });
+            stream.pipe(response);
+        } else {
+            response.writeHead(404);
+            response.end("Not Found\n");
+        }
 
     }).listen(kvPort, function () {
         console.log("server listening on port", kvPort);
